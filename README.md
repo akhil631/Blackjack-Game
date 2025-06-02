@@ -1,6 +1,6 @@
 # Blackjack-Game
-Code work for polygence online application
-Features
+Features:
+
 Random card dealing
 
 Automatic score calculation with Ace adjustment
