@@ -1,0 +1,74 @@
+import random
+
+def pick_card():
+    deck = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+    return random.choice(deck)
+
+def score_hand(hand):
+    total = sum(hand)
+    # Check for blackjack (Ace + 10)
+    if total == 21 and len(hand) == 2:
+        return 'blackjack'
+    # Adjust ace value if over 21
+    while total > 21 and 11 in hand:
+        hand[hand.index(11)] = 1
+        total = sum(hand)
+    return total
+
+def decide_winner(player_score, dealer_score):
+    if player_score == dealer_score:
+        return "It's a tie!"
+    if player_score == 'blackjack':
+        return "You win with a Blackjack!"
+    if dealer_score == 'blackjack':
+        return "Dealer wins with a Blackjack."
+    if player_score > 21:
+        return "You busted! Dealer wins."
+    if dealer_score > 21:
+        return "Dealer busted! You win."
+    if player_score > dealer_score:
+        return "You win!"
+    return "Dealer wins."
+
+def show_hands(player, dealer, reveal_dealer=False):
+    print(f"Your cards: {player} - score: {score_hand(player)}")
+    if reveal_dealer:
+        print(f"Dealer's cards: {dealer} - score: {score_hand(dealer)}")
+    else:
+        print(f"Dealer's first card: {dealer[0]}")
+
+def play_blackjack():
+    player_cards = [pick_card(), pick_card()]
+    dealer_cards = [pick_card(), pick_card()]
+
+    while True:
+        player_score = score_hand(player_cards)
+        dealer_score = score_hand(dealer_cards)
+
+        show_hands(player_cards, dealer_cards)
+
+        if player_score == 'blackjack' or player_score > 21:
+            break
+
+        move = input("Hit or stand? (h/s): ").lower()
+        if move == 'h':
+            player_cards.append(pick_card())
+        elif move == 's':
+            break
+        else:
+            print("Please enter 'h' or 's'.")
+
+    while dealer_score != 'blackjack' and dealer_score < 17:
+        dealer_cards.append(pick_card())
+        dealer_score = score_hand(dealer_cards)
+
+    show_hands(player_cards, dealer_cards, reveal_dealer=True)
+    print(decide_winner(player_score, dealer_score))
+
+
+if __name__ == "__main__":
+    print("Welcome to Blackjack!")
+    while input("Play a round? (y/n): ").lower() == 'y':
+        print("\n" * 5)
+        play_blackjack()
+    print("Thanks for playing!")
