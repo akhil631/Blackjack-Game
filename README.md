@@ -16,7 +16,6 @@ Python programming fundamentals
 
 Conditional logic and loops
 
-Functions and code modularity
 
 Randomization and list handling
 
